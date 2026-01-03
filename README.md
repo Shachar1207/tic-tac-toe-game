@@ -186,6 +186,4 @@ The game was customized using:
 
 ---
 
-**Note**: Don't forget to:
-- Replace `yourusername` with your actual GitHub username
-- Add a screenshot of your game
+
