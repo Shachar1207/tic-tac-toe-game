@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Game</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #87ceeb;
+        }
+
+        /* Main container */
+        .game-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 480px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        /* Rules box */
+        .rules {
+            background: #e8e8e8;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .rules h3 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .rules ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .rules li {
+            margin: 4px 0;
+        }
+
+        /* Game status text */
+        .status {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 18px 0;
+            color: #333;
+            min-height: 28px;
+        }
+
+        /* Timer */
+        .timer {
+            font-size: 18px;
+            color: #c0392b;
+            margin: 8px 0;
+            font-weight: bold;
+        }
+
+        /* The game board */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 115px);
+            grid-template-rows: repeat(3, 115px);
+            gap: 8px;
+            margin: 18px auto;
+            justify-content: center;
+        }
+
+        /* Individual squares */
+        .square {
+            background: #f5f5f5;
+            border: 2px solid #4a90e2;
+            border-radius: 4px;
+            font-size: 44px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .square:hover {
+            background: #e0e0e0;
+        }
+
+        .square.taken {
+            cursor: not-allowed;
+        }
+
+        .square.taken:hover {
+            background: #f5f5f5;
+        }
+
+        /* X and O colors */
+        .square.x {
+            color: #2c3e50;
+        }
+
+        .square.o {
+            color: #e74c3c;
+        }
+
+        /* Score display */
+        .score {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+
+        .score div {
+            padding: 8px 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* Button styling */
+        .new-game-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .new-game-btn:hover {
+            background: #357abd;
+        }
+
+        /* Winner highlighting */
+        .square.winner {
+            background: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Tic Tac Toe</h1>
+        
+        <!-- Game Rules -->
+        <div class="rules">
+            <h3>Game Rules:</h3>
+            <ul>
+                <li>Players take turns placing X and O on the board</li>
+                <li>First player is X, second player is O</li>
+                <li>Get 3 in a row (horizontal, vertical, or diagonal) to win</li>
+                <li>If all 9 squares are filled with no winner, it's a draw</li>
+                <li>You have 30 seconds per move - don't take too long!</li>
+            </ul>
+        </div>
+
+        <!-- Score Display -->
+        <div class="score">
+            <div>Player X: <span id="scoreX">0</span></div>
+            <div>Draws: <span id="scoreDraw">0</span></div>
+            <div>Player O: <span id="scoreO">0</span></div>
+        </div>
+
+        <!-- Game Status -->
+        <div class="status" id="status">Player X's Turn</div>
+        
+        <!-- Timer -->
+        <div class="timer" id="timer">Time: 30s</div>
+
+        <!-- Game Board -->
+        <div class="board" id="board">
+            <div class="square" data-index="0"></div>
+            <div class="square" data-index="1"></div>
+            <div class="square" data-index="2"></div>
+            <div class="square" data-index="3"></div>
+            <div class="square" data-index="4"></div>
+            <div class="square" data-index="5"></div>
+            <div class="square" data-index="6"></div>
+            <div class="square" data-index="7"></div>
+            <div class="square" data-index="8"></div>
+        </div>
+
+        <!-- New Game Button -->
+        <button class="new-game-btn" id="newGameBtn">Start New Game</button>
+    </div>
+
+    <script>
+        // Get HTML elements
+        const board = document.getElementById('board');
+        const squares = document.querySelectorAll('.square');
+        const statusDisplay = document.getElementById('status');
+        const timerDisplay = document.getElementById('timer');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const scoreXDisplay = document.getElementById('scoreX');
+        const scoreODisplay = document.getElementById('scoreO');
+        const scoreDrawDisplay = document.getElementById('scoreDraw');
+
+        // Game variables
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+        let time_left = 30;
+        let timerInterval = null;
+
+        // Track scores
+        let scores = {
+            X: 0,
+            O: 0,
+            draws: 0
+        };
+
+        // All winning combinations
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Add click listeners to squares
+        squares.forEach(square => {
+            square.addEventListener('click', handleSquareClick);
+        });
+
+        // Add click listener to button
+        newGameBtn.addEventListener('click', resetGame);
+
+        // Handle when a square is clicked
+        function handleSquareClick(event) {
+            const clickedSquare = event.target;
+            const clickedIndex = clickedSquare.getAttribute('data-index');
+            
+            console.log("Square clicked: " + clickedIndex);
+
+            // Check if square is taken or game is over
+            if (gameBoard[clickedIndex] !== '' || !gameActive) {
+                console.log("Move not allowed");
+                return;
+            }
+
+            makeMove(clickedSquare, clickedIndex);
+        }
+
+        // Make a move on the board
+        function makeMove(square, index) {
+            gameBoard[index] = currentPlayer;
+            square.textContent = currentPlayer;
+            square.classList.add('taken');
+            square.classList.add(currentPlayer.toLowerCase());
+            
+            console.log("Current player: " + currentPlayer);
+            console.log("Game board state:", gameBoard);
+
+            resetTimer();
+            checkForWinner();
+        }
+
+        // Check if someone won
+        function checkForWinner() {
+            let roundWon = false;
+            let winningCombo = null;
+
+            for (let i = 0; i < winningConditions.length; i++) {
+                const condition = winningConditions[i];
+                const a = gameBoard[condition[0]];
+                const b = gameBoard[condition[1]];
+                const c = gameBoard[condition[2]];
+
+                if (a === '' || b === '' || c === '') {
+                    continue;
+                }
+
+                if (a === b && b === c) {
+                    roundWon = true;
+                    winningCombo = condition;
+                    console.log("Winner found! Combination:", winningCombo);
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                announceWinner(currentPlayer, winningCombo);
+                return;
+            }
+
+            // Check for draw
+            let boardFull = true;
+            for (let i = 0; i < gameBoard.length; i++) {
+                if (gameBoard[i] === '') {
+                    boardFull = false;
+                    break;
+                }
+            }
+            
+            if (boardFull) {
+                announceDraw();
+                return;
+            }
+
+            // Switch players
+            switchPlayer();
+        }
+
+        // Switch to other player
+        function switchPlayer() {
+            if (currentPlayer === 'X') {
+                currentPlayer = 'O';
+            } else {
+                currentPlayer = 'X';
+            }
+            statusDisplay.textContent = "Player " + currentPlayer + "'s Turn";
+        }
+
+        // Announce winner
+        function announceWinner(winner, combo) {
+            gameActive = false;
+            stopTimer();
+            statusDisplay.textContent = "Player " + winner + " Wins!";
+            console.log("Game over - winner: " + winner);
+            
+            // Update score
+            scores[winner]++;
+            updateScoreDisplay();
+
+            // Highlight winning squares
+            for (let i = 0; i < combo.length; i++) {
+                squares[combo[i]].classList.add('winner');
+            }
+        }
+
+        // Announce draw
+        function announceDraw() {
+            gameActive = false;
+            stopTimer();
+            statusDisplay.textContent = "It's a Draw!";
+            console.log("Game over - draw");
+            
+            scores.draws++;
+            updateScoreDisplay();
+        }
+
+        // Handle timeout
+        function timeOut() {
+            gameActive = false;
+            stopTimer();
+            statusDisplay.textContent = "Time's Up! Player " + currentPlayer + " Loses!";
+            console.log("Timeout - player " + currentPlayer + " loses");
+            
+            // Other player wins
+            let winner = currentPlayer === 'X' ? 'O' : 'X';
+            scores[winner]++;
+            updateScoreDisplay();
+        }
+
+        // Start the timer
+        function startTimer() {
+            stopTimer();
+            time_left = 30;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(function() {
+                time_left--;
+                updateTimerDisplay();
+                
+                if (time_left <= 0) {
+                    timeOut();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            timerDisplay.textContent = "Time: " + time_left + "s";
+        }
+
+        // Reset timer
+        function resetTimer() {
+            startTimer();
+        }
+
+        // Stop timer
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            scoreXDisplay.textContent = scores.X;
+            scoreODisplay.textContent = scores.O;
+            scoreDrawDisplay.textContent = scores.draws;
+        }
+
+        // Reset game
+        function resetGame() {
+            console.log("Starting new game");
+            currentPlayer = 'X';
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            statusDisplay.textContent = "Player X's Turn";
+            
+            // Clear all squares
+            for (let i = 0; i < squares.length; i++) {
+                squares[i].textContent = '';
+                squares[i].classList.remove('taken', 'x', 'o', 'winner');
+            }
+
+            startTimer();
+        }
+
+        // Start first game
+        startTimer();
+    </script>
+</body>
+</html>
