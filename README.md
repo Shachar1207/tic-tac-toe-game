@@ -47,6 +47,9 @@ Hope you enjoy it!
 - **JavaScript (ES6)**: for the Game logic, timer, and interactivity of the game
 
 ## How to run my project?
+Click the following link: https://shachar1207.github.io/tic-tac-toe-game/
+
+or
 
 1. Clone this repository:
    ```bash
@@ -185,5 +188,6 @@ The game was customized using:
 - Email: Shachari07sharon@gmail.com
 
 ---
+
 
 
