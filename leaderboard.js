@@ -2,7 +2,7 @@
 // Its only job is to ask the server for the leaderboard data and display it.
 
 // Same server URL as in script.js - must match exactly
-const SERVER_URL = 'https://your-tic-tac-toe-server.onrender.com';
+const SERVER_URL = 'https://tic-tac-toe-server-3mou.onrender.com';
 
 // This runs automatically as soon as the page loads
 window.onload = loadLeaderboard;

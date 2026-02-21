@@ -7,7 +7,7 @@
 
 // The URL of your backend server on Render.
 // Once you deploy the server to Render, replace this with the actual URL.
-const SERVER_URL = 'https://your-tic-tac-toe-server.onrender.com';
+const SERVER_URL = 'https://tic-tac-toe-server-3mou.onrender.com';
 
 // ─────────────────────────────────────────────
 // SCREEN MANAGEMENT
