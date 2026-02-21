@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <!-- Link to the separate CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- USERNAME SCREEN: shown first so players can enter their names -->
+    <div class="screen" id="usernameScreen">
+        <div class="username-container">
+            <h1>🎮 Tic Tac Toe</h1>
+            <p>Enter player names to start the game</p>
+            <div class="input-group">
+                <label for="player1Input">Player X Name:</label>
+                <input type="text" id="player1Input" placeholder="Enter name..." maxlength="20">
+            </div>
+            <div class="input-group">
+                <label for="player2Input">Player O Name:</label>
+                <input type="text" id="player2Input" placeholder="Enter name..." maxlength="20">
+            </div>
+            <button class="btn btn-primary" id="startGameBtn">Start Game</button>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN: the actual tic tac toe board -->
+    <div class="screen hidden" id="gameScreen">
+        <div class="game-container">
+            <h1>🎮 Tic Tac Toe</h1>
+
+            <!-- Score Display -->
+            <div class="score">
+                <div class="score-box" id="scoreX">
+                    <span class="score-name" id="nameX">Player X</span>
+                    <span class="score-number" id="scoreXNum">0</span>
+                </div>
+                <div class="score-box draws">
+                    <span class="score-name">Draws</span>
+                    <span class="score-number" id="scoreDraw">0</span>
+                </div>
+                <div class="score-box" id="scoreO">
+                    <span class="score-name" id="nameO">Player O</span>
+                    <span class="score-number" id="scoreONum">0</span>
+                </div>
+            </div>
+
+            <!-- Game Status Message -->
+            <div class="status" id="status">Player X's Turn</div>
+
+            <!-- Timer -->
+            <div class="timer" id="timer">⏱ Time: 30s</div>
+
+            <!-- The 3x3 Board -->
+            <div class="board" id="board">
+                <div class="square" data-index="0"></div>
+                <div class="square" data-index="1"></div>
+                <div class="square" data-index="2"></div>
+                <div class="square" data-index="3"></div>
+                <div class="square" data-index="4"></div>
+                <div class="square" data-index="5"></div>
+                <div class="square" data-index="6"></div>
+                <div class="square" data-index="7"></div>
+                <div class="square" data-index="8"></div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-row">
+                <button class="btn btn-primary" id="newGameBtn">New Game</button>
+                <a href="leaderboard.html" class="btn btn-secondary">🏆 Leaderboard</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to the separate JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
