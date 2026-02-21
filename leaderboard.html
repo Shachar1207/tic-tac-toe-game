@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard - Tic Tac Toe</title>
+    <title>Leaderboard — Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="leaderboard-container">
-        <h1>🏆 Leaderboard</h1>
-        <p class="leaderboard-subtitle">All-time wins record</p>
+    <div class="screen">
+        <div class="card leaderboard-container">
+            <div class="title">LEADERBOARD</div>
+            <div class="subtitle">All-time wins record</div>
 
-        <!-- The table is filled in dynamically by leaderboard.js -->
-        <div id="leaderboardList">
-            <p class="loading">Loading scores...</p>
+            <div id="leaderboardList">
+                <p class="loading">Loading scores...</p>
+            </div>
+
+            <a href="index.html" class="btn btn-primary" style="margin-top: 24px;">
+                🎮 Back to Game
+            </a>
         </div>
-
-        <a href="index.html" class="btn btn-primary" style="margin-top: 30px; display: inline-block;">
-            🎮 Back to Game
-        </a>
     </div>
 
     <script src="leaderboard.js"></script>

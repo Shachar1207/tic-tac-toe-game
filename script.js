@@ -7,7 +7,7 @@
 
 // The URL of your backend server on Render.
 // Once you deploy the server to Render, replace this with the actual URL.
-const SERVER_URL = 'https://tic-tac-toe-server-3mou.onrender.com';
+const SERVER_URL = 'https://your-tic-tac-toe-server.onrender.com';
 
 // ─────────────────────────────────────────────
 // SCREEN MANAGEMENT
@@ -58,7 +58,8 @@ startGameBtn.addEventListener('click', () => {
 const boardEl = document.getElementById('board');
 const squares = document.querySelectorAll('.square');
 const statusDisplay = document.getElementById('status');
-const timerDisplay = document.getElementById('timer');
+const timerBar = document.getElementById('timerBar');
+const timerText = document.getElementById('timerText');
 const newGameBtn = document.getElementById('newGameBtn');
 const scoreXDisplay = document.getElementById('scoreXNum');
 const scoreODisplay = document.getElementById('scoreONum');
@@ -266,9 +267,11 @@ function resetTimer() {
 }
 
 function updateTimerDisplay() {
-    timerDisplay.textContent = `⏱ Time: ${timeLeft}s`;
-    // Turn red when time is running low
-    timerDisplay.style.color = timeLeft <= 10 ? '#e74c3c' : '#aaa';
+    const pct = (timeLeft / 30) * 100;
+    timerBar.style.width = pct + "%";
+    timerText.textContent = timeLeft + "s";
+    if (timeLeft <= 10) { timerBar.classList.add("low"); }
+    else { timerBar.classList.remove("low"); }
 }
 
 // ─────────────────────────────────────────────
