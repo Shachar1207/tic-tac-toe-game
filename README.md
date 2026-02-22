@@ -51,7 +51,7 @@ fetch('https://your-server.onrender.com/leaderboard')
 
 ## Deployment
 
-This client is deployed as a **Static Site** on [Render](https://render.com).
+This client is deployed as a **Static Site** on https://tic-tac-toe-client-fpqj.onrender.com/.
 Connected to this GitHub repository — every push to `main` triggers an automatic redeploy.
 
 ## Project Author
